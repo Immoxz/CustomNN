@@ -1,9 +1,9 @@
 import random
 
 from network import *
-from util import generateDate2D4C, plotData
+from util import generateData2D4C, plotData
 
-data2c, labels2c = generateDate2D4C(400)
+data2c, labels2c = generateData2D4C(400)
 # data2c, labels2c = loadParametes(os.path.join('C:\\Users\\piotr.lejman\\Desktop\\NNparameters', 'data2c.txt'))
 input_nodes = len(data2c[0])
 hidden_nodes1 = [11,7,4]
@@ -53,7 +53,7 @@ for iter in range(max):
 
 ok = 0.0
 
-checkData, checkLabels = generateDate2D4C(1000)
+checkData, checkLabels = generateData2D4C(1000)
 for iter2 in range(len(checkData)):
     unitX = Unit(checkData[iter2][0], 0.0)
     unitY = Unit(checkData[iter2][1], 0.0)

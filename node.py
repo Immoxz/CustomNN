@@ -7,8 +7,8 @@ class Node(object):
         if debug_mode:
             print('Number of input nodes', in_nodes)
         self.debug_mode = debug_mode
-        self.mul_gates = [multiplyGate() for m in range(in_nodes)]
-        self.add_gates = [addGate() for a in range(in_nodes)]
+        self.mul_gates = [multiplyGate() for _ in range(in_nodes)]
+        self.add_gates = [addGate() for _ in range(in_nodes)]
         # self.sigg0 = sigmoidGate()
         self.mul_units = []
         self.add_units = []

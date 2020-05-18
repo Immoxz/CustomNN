@@ -10,7 +10,7 @@ class NodesLayer(object):
         self.__make_nodes()
 
     def __make_nodes(self):
-        self.layer = [Node(self.num_input_nodes, self.debug_mode) for n in range(self.num_output_nodes)]
+        self.layer = [Node(self.num_input_nodes, self.debug_mode) for _ in range(self.num_output_nodes)]
 
     def get_nodes(self):
         return self.layer

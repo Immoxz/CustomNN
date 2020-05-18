@@ -49,7 +49,7 @@ def postProcessGameCube(X):
 #     return return_data
 
 
-def shuffleDateWithClasses(data, classses):
+def shuffleDataWithClasses(data, classses):
     if len(data) == len(classses) and len(data) == 1:
         return data, classses
     elif len(data) == len(classses) and len(data) != 0:
@@ -71,36 +71,36 @@ def shuffleDateWithClasses(data, classses):
         raise ValueError('Length of data and classes are different.')
 
 
-def generateDate2D4C(num, max_random=3):
-    date = []
+def generateData2D4C(num, max_random=3):
+    data = []
     classes = []
     for i in range(num):
         if i < int(1 * num / 4):
-            date.append([round(random.uniform(0, max_random), 1), round(random.uniform(0, max_random), 1)])
+            data.append([round(random.uniform(0, max_random), 1), round(random.uniform(0, max_random), 1)])
             classes.append(-1.0)
         elif i < int(2 * num / 4):
-            date.append([round(random.uniform(0, max_random), 1), round(random.uniform(-max_random, 0), 1)])
+            data.append([round(random.uniform(0, max_random), 1), round(random.uniform(-max_random, 0), 1)])
             classes.append(-0.5)
         elif i < int(3 * num / 4):
-            date.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(0, max_random), 1)])
+            data.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(0, max_random), 1)])
             classes.append(0.5)
         else:
-            date.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
+            data.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
             classes.append(1.0)
-    return shuffleDateWithClasses(date, classes)
+    return shuffleDataWithClasses(data, classes)
 
 
-def generateDate2D2C(num, max_random=3):
-    date = []
+def generateData2D2C(num, max_random=3):
+    data = []
     classes = []
     for i in range(num):
         if i < num / 2:
-            date.append([round(random.uniform(0, max_random), 1), round(random.uniform(0, max_random), 1)])
+            data.append([round(random.uniform(0, max_random), 1), round(random.uniform(0, max_random), 1)])
             classes.append(1)
         else:
-            date.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
+            data.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
             classes.append(-1)
-    return shuffleDateWithClasses(date, classes)
+    return shuffleDataWithClasses(data, classes)
 
 
 def transformToUtils(inputVector):
