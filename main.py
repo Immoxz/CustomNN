@@ -1,11 +1,11 @@
 import os
 
 from units import Unit
-from util import generateData2D4C
+from util import generate_data2d4c, load_parametes
 
-net = loadParametes(os.path.join('C:\\Users\\piotr.lejman\\Desktop\\NNparameters', 'trained_net_I2_h9_o4_100PERC.txt'))
+net = load_parametes(os.path.join('C:\\Users\\piotr.lejman\\Desktop\\NNparameters', 'trained_net_I2_h9_o4_100PERC.txt'))
 ok = 0
-checkData, checkLabels = generateData2D4C(1000)
+checkData, checkLabels = generate_data2d4c(1000)
 for iter2 in range(len(checkData)):
     unitX = Unit(checkData[iter2][0], 0.0)
     unitY = Unit(checkData[iter2][1], 0.0)

@@ -7,12 +7,12 @@ class Node(object):
         if debug_mode:
             print('Number of input nodes', in_nodes)
         self.debug_mode = debug_mode
-        self.mul_gates = [multiplyGate() for _ in range(in_nodes)]
-        self.add_gates = [addGate() for _ in range(in_nodes)]
-        # self.sigg0 = sigmoidGate()
+        self.mul_gates = [multiply_gate() for _ in range(in_nodes)]
+        self.add_gates = [add_gate() for _ in range(in_nodes)]
+        self.sigg0 = sigmoid_gate()
         self.mul_units = []
         self.add_units = []
-        self.inner_units = [Unit(random.uniform(-1.0, 1.0), random.random() - 0.5) for iu in range(in_nodes)]
+        self.inner_units = [Unit(random.uniform(-1.0, 1.0), random.random() - 0.5) for _ in range(in_nodes)]
         self.native_unit = Unit(random.uniform(-1.0, 1.0), random.random() - .5)
         self.out_unit = Unit
         self.nodes_inside = len(self.inner_units)
@@ -25,17 +25,17 @@ class Node(object):
                           enumerate(self.mul_gates)]
         self.add_units = []
         # additional cascade gates
-        for aGi, add_gate in enumerate(self.add_gates):
-            if aGi == 0:
+        for a_gi, add_gate in enumerate(self.add_gates):
+            if a_gi == 0:
                 self.add_units = [add_gate.forward(self.mul_units[0], self.mul_units[1])]
-            elif len(self.mul_units) - 1 > aGi > 0:
-                self.add_units.append(add_gate.forward(self.add_units[-1], self.mul_units[aGi + 1]))
-            if len(self.mul_units) - 1 == aGi:
+            elif len(self.mul_units) - 1 > a_gi > 0:
+                self.add_units.append(add_gate.forward(self.add_units[-1], self.mul_units[a_gi + 1]))
+            if len(self.mul_units) - 1 == a_gi:
                 self.add_units.append(add_gate.forward(self.add_units[-1], self.native_unit))
 
         self.out_unit = self.add_units[-1]
         # sigmoid gate
-        # self.out_unit = self.sigg0.forward(self.add_units[-1])
+        self.out_unit = self.sigg0.forward(self.add_units[-1])
 
         if self.debug_mode:
             [print('input ', x.value, x.grad) for x in input_units_table]
@@ -55,7 +55,7 @@ class Node(object):
         return self.out_unit
 
     def backward(self):
-        # self.sigg0.backward()
+        self.sigg0.backward()
         for add_gate in reversed(self.add_gates):
             add_gate.backward()
         for mul_gate in reversed(self.mul_gates):
@@ -70,16 +70,16 @@ class Node(object):
             print(' ')
             print('-----------------------------------------------')
 
-    def updateParams(self, step_size):
+    def update_params(self, step_size):
         for inner_unit in self.inner_units:
             inner_unit.value += step_size * inner_unit.grad
         self.native_unit.value += step_size * self.native_unit.grad
 
-    def getSize(self):
+    def get_size(self):
         return self.nodes_inside
 
-    def getOutputUnit(self):
+    def get_output_unit(self):
         return self.out_unit
 
-    def getInnerUnits(self):
+    def get_inner_units(self):
         return self.inner_units

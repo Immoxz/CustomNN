@@ -4,18 +4,17 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-# from yaml import load, dump
+from yaml import load, dump
 
 from units import Unit
 
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
 
-# try:
-#     from yaml import CLoader as Loader, CDumper as Dumper
-# except ImportError:
-#     from yaml import Loader, Dumper
 
-
-def makeLogUnderMax(y, max):
+def make_log_under_max(y, max):
     if y == 0:
         ly = 0
     else:
@@ -23,8 +22,8 @@ def makeLogUnderMax(y, max):
     return ly / np.math.log(max, 2)
 
 
-def postProcessGameCube(X):
-    return np.array([makeLogUnderMax(y, max(X)) for y in X])
+def post_process_game_cube(X):
+    return np.array([make_log_under_max(y, max(X)) for y in X])
 
 
 #
@@ -37,41 +36,41 @@ def postProcessGameCube(X):
 #     f.close()
 #
 #
-# def loadParametes(filePath):
-#     f = open(filePath)
-#     data = load(f.read(), Loader=Loader)
-#     if len(data.keys()) != 1:
-#         return_data = [data[key] for key in data.keys()]
-#     else:
-#         key = list(data.keys())[0]
-#         return_data = data[key]
-#     f.close()
-#     return return_data
+def load_parametes(filePath):
+    f = open(filePath)
+    data = load(f.read(), Loader=Loader)
+    if len(data.keys()) != 1:
+        return_data = [data[key] for key in data.keys()]
+    else:
+        key = list(data.keys())[0]
+        return_data = data[key]
+    f.close()
+    return return_data
 
 
-def shuffleDataWithClasses(data, classses):
+def shuffle_data_with_classes(data, classses):
     if len(data) == len(classses) and len(data) == 1:
         return data, classses
     elif len(data) == len(classses) and len(data) != 0:
         for i in range(100000):
             direction = random.random() - 0.5
             pos = int(random.random() * len(data) - 1)
-            moveFor = int(random.randrange(1, len(data)) / 2)
-            if moveFor + pos >= len(data) - 1:
-                moveFor = -int(random.randrange(1, len(data)) / 2)
+            move_for = int(random.randrange(1, len(data)) / 2)
+            if move_for + pos >= len(data) - 1:
+                move_for = -int(random.randrange(1, len(data)) / 2)
 
             if direction < 0:
-                data[pos + moveFor], data[pos] = data[pos], data[pos + moveFor]
-                classses[pos + moveFor], classses[pos] = classses[pos], classses[pos + moveFor]
+                data[pos + move_for], data[pos] = data[pos], data[pos + move_for]
+                classses[pos + move_for], classses[pos] = classses[pos], classses[pos + move_for]
             else:
-                data[pos], data[pos + moveFor] = data[pos + moveFor], data[pos]
-                classses[pos], classses[pos + moveFor] = classses[pos + moveFor], classses[pos]
+                data[pos], data[pos + move_for] = data[pos + move_for], data[pos]
+                classses[pos], classses[pos + move_for] = classses[pos + move_for], classses[pos]
         return data, classses
     else:
         raise ValueError('Length of data and classes are different.')
 
 
-def generateData2D4C(num, max_random=3):
+def generate_data2d4c(num, max_random=3):
     data = []
     classes = []
     for i in range(num):
@@ -87,10 +86,10 @@ def generateData2D4C(num, max_random=3):
         else:
             data.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
             classes.append(1.0)
-    return shuffleDataWithClasses(data, classes)
+    return shuffle_data_with_classes(data, classes)
 
 
-def generateData2D2C(num, max_random=3):
+def generate_data2d2c(num, max_random=3):
     data = []
     classes = []
     for i in range(num):
@@ -100,18 +99,18 @@ def generateData2D2C(num, max_random=3):
         else:
             data.append([round(random.uniform(-max_random, 0), 1), round(random.uniform(-max_random, 0), 1)])
             classes.append(-1)
-    return shuffleDataWithClasses(data, classes)
+    return shuffle_data_with_classes(data, classes)
 
 
-def transformToUtils(inputVector):
+def transform_to_utils(inputVector):
     return [Unit(x, 0.0) for x in inputVector]
 
 
-def minMaxScaling(x, min=-10, max=10):
+def min_max_scaling(x, min=-10, max=10):
     return (x - min) / (max - min)
 
 
-def storeAndAppendResults(path, result):
+def store_and_append_results(path, result):
     data = ''
     if os.path.exists(path):
         k = open(path, 'r+')
@@ -123,7 +122,7 @@ def storeAndAppendResults(path, result):
     f.close()
 
 
-def calcPull(units_out, labels, label, pull_up, pull_down, limit=0.99):
+def calc_pull(units_out, labels, label, pull_up, pull_down, limit=0.99):
     pulls = [pull_down for p in range(len(units_out))]
     for i in range(len(units_out)):
         if labels[i] == label and units_out[i].value <= limit:
@@ -131,7 +130,7 @@ def calcPull(units_out, labels, label, pull_up, pull_down, limit=0.99):
     return pulls
 
 
-def printPerc(iter, max):
+def print_perc(iter, max):
     if (iter % int((max / 10)) == 0 or iter + 1 == max) and True:
         bar = ['  ' for i in range(10)]
         for i in range(int((iter + 1) * 10 / max)):
@@ -139,7 +138,7 @@ def printPerc(iter, max):
         print(''.join(bar), int((iter + 1) * 100 / max), '%')
 
 
-def lossFunction(x, y, W):
+def loss_function(x, y, W):
     scores = W.dot(x)
     margins = np.maximum(0, scores - scores[y] + 1)
     margins[y] = 0
@@ -147,7 +146,7 @@ def lossFunction(x, y, W):
     return loss
 
 
-def plotData(data, labels, slo):
+def plot_data(data, labels, slo):
     r1 = np.asarray([x[0] for x in data])
     r2 = np.asarray([x[1] for x in data])
     l1 = np.asarray([slo[y] for y in labels])

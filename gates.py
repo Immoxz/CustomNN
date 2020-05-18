@@ -1,10 +1,10 @@
 from units import *
 import numpy as np
 
-from util import minMaxScaling
+from util import min_max_scaling
 
 
-class multiplyGate(object):
+class multiply_gate(object):
     def __init__(self):
         self.u0 = Unit
         self.inner = Unit
@@ -29,7 +29,7 @@ class multiplyGate(object):
             self.inner.grad = 0
 
 
-class addGate(object):
+class add_gate(object):
     def __init__(self):
         self.u0 = Unit
         self.u1 = Unit
@@ -48,14 +48,13 @@ class addGate(object):
         self.u1.grad += 1.0 * self.utop.grad
 
 
-
-class sigmoidGate(object):
+class sigmoid_gate(object):
     def __init__(self):
         self.u0 = Unit
         self.utop = Unit
 
     def sig(self, x):
-        return 1 / (1 + np.exp(np.float64(minMaxScaling(-x))))
+        return 1 / (1 + np.exp(np.float64(min_max_scaling(-x))))
 
     def forward(self, u0):
         # store pointers to input Units u0 and u1 and output unit utop
@@ -66,5 +65,3 @@ class sigmoidGate(object):
     def backward(self):
         s = self.sig(self.u0.value)
         self.u0.grad += (s * (1 - s)) * self.utop.grad
-
-

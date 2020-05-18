@@ -3,10 +3,10 @@ from gates import *
 
 class Circuit(object):
     def __init__(self):
-        self.mulg0 = multiplyGate()
-        self.mulg1 = multiplyGate()
-        self.addg0 = addGate()
-        self.addg1 = addGate()
+        self.mulg0 = multiply_gate()
+        self.mulg1 = multiply_gate()
+        self.addg0 = add_gate()
+        self.addg1 = add_gate()
         self.ax = Unit
         self.by = Unit
         self.axpby = Unit

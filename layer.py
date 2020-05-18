@@ -27,4 +27,4 @@ class NodesLayer(object):
 
     def update_params(self, step_size):
         for node in self.layer:
-            node.updateParams(step_size)
+            node.update_params(step_size)

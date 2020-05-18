@@ -1,15 +1,15 @@
 import random
 
 from network import *
-from util import generateData2D4C, plotData
+from util import generate_data2d4c, plot_data
 
-data2c, labels2c = generateData2D4C(400)
+data2c, labels2c = generate_data2d4c(400)
 # data2c, labels2c = loadParametes(os.path.join('C:\\Users\\piotr.lejman\\Desktop\\NNparameters', 'data2c.txt'))
 input_nodes = len(data2c[0])
 hidden_nodes1 = [11,7,4]
 output_nodes = 4
 max = len(data2c) * 800
-# debug = False
+debug = False
 labels = [1, -1, -0.5, 0.5]
 wynik = 0
 def_bot = bottom_good = 0.3
@@ -31,7 +31,7 @@ for iter in range(max):
     out_unit = net.forward([Unit(data2c[choice][0], 0.0), Unit(data2c[choice][1], 0.0)])
     # -----end forward-----
 
-    pulls = calcPull(out_unit, labels, label, pull_up, pull_down)
+    pulls = calc_pull(out_unit, labels, label, pull_up, pull_down)
     # print(lossFunction(out_unit, label, o_slo[label]))
     # --------backprop---------
     for i in range(len(pulls)):
@@ -49,11 +49,11 @@ for iter in range(max):
     net.update_parameters(step_size)
 
     # debug print
-    printPerc(iter, max)
+    print_perc(iter, max)
 
 ok = 0.0
 
-checkData, checkLabels = generateData2D4C(1000)
+checkData, checkLabels = generate_data2d4c(1000)
 for iter2 in range(len(checkData)):
     unitX = Unit(checkData[iter2][0], 0.0)
     unitY = Unit(checkData[iter2][1], 0.0)
